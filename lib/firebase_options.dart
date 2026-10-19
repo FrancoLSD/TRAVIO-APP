@@ -51,18 +51,17 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC5IlagbjLt-NrUzs3txTCX-288v9FXX1Y',
-    appId: '1:784598206632:android:21196b66dbf03ee07d5a9d',
+    appId: '1:784598206632:android:c65e9a6443716f137d5a9d',
     messagingSenderId: '784598206632',
     projectId: 'travio-db',
     storageBucket: 'travio-db.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD_hlRCveq0jHmQZ7kf6wA4pRdQVyxHUao',
-    appId: '1:784598206632:ios:f3af3ae17f7bc4537d5a9d',
+    appId: '1:784598206632:ios:ecddbc4e0e544dd47d5a9d',
     messagingSenderId: '784598206632',
     projectId: 'travio-db',
     storageBucket: 'travio-db.firebasestorage.app',
-    iosBundleId: 'com.example.travioApp',
+    iosBundleId: 'com.flsd.travio',
   );
 }

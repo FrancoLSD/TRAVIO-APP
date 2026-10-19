@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.travioApp</string>
+	<string>com.flsd.travio</string>
 	<key>PROJECT_ID</key>
 	<string>travio-db</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:784598206632:ios:f3af3ae17f7bc4537d5a9d</string>
+	<string>1:784598206632:ios:ecddbc4e0e544dd47d5a9d</string>
 </dict>
 </plist>

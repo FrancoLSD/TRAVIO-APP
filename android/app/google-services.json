@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:784598206632:android:21196b66dbf03ee07d5a9d",
+        "mobilesdk_app_id": "1:784598206632:android:c65e9a6443716f137d5a9d",
         "android_client_info": {
-          "package_name": "com.example.travio_app"
+          "package_name": "com.flsd.travio"
         }
       },
       "oauth_client": [],

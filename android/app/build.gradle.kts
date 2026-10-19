@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.travio_app"
+    namespace = "com.flsd.travio"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -24,7 +24,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.travio_app"
+        applicationId = "com.flsd.travio"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
