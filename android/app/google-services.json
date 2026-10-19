@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "784598206632",
+    "project_id": "travio-db",
+    "storage_bucket": "travio-db.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784598206632:android:21196b66dbf03ee07d5a9d",
+        "android_client_info": {
+          "package_name": "com.example.travio_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5IlagbjLt-NrUzs3txTCX-288v9FXX1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
