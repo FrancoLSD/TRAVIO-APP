@@ -48,14 +48,14 @@ class _ComingSoonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tint = AppColors.accent.withValues(alpha: 0.09);
+    final tint = context.colors.accent.withValues(alpha: 0.09);
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(24, 36, 24, 36),
       decoration: BoxDecoration(
-        color: AppColors.card,
+        color: context.colors.card,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: context.colors.border),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,10 +63,10 @@ class _ComingSoonCard extends StatelessWidget {
           CircleAvatar(
             radius: 38,
             backgroundColor: tint,
-            child: const Icon(
+            child: Icon(
               Icons.notifications_none,
               size: 30,
-              color: AppColors.accent,
+              color: context.colors.accent,
             ),
           ),
           const SizedBox(height: 20),
@@ -76,35 +76,35 @@ class _ComingSoonCard extends StatelessWidget {
               color: tint,
               borderRadius: BorderRadius.circular(999),
             ),
-            child: const Text(
+            child: Text(
               'COMING SOON',
               style: TextStyle(
                 fontFamily: AppFonts.mono,
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 1.5,
-                color: AppColors.accent,
+                color: context.colors.accent,
               ),
             ),
           ),
           const SizedBox(height: 14),
-          const Text(
+          Text(
             'Rate alerts are on the way',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: AppColors.text,
+              color: context.colors.text,
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
+          Text(
             "Soon you'll be able to set target rates and movement alerts for any currency pair. We'll let you know when it's ready.",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 15,
               height: 1.45,
-              color: AppColors.textSecondary,
+              color: context.colors.textSecondary,
             ),
           ),
         ],

@@ -14,9 +14,11 @@ class MainNavigation extends StatelessWidget {
     return Scaffold(
       body: shell,
       bottomNavigationBar: DecoratedBox(
-        decoration: const BoxDecoration(
-          color: AppColors.background,
-          border: Border(top: BorderSide(color: AppColors.border, width: 0.5)),
+        decoration: BoxDecoration(
+          color: context.colors.background,
+          border: Border(
+            top: BorderSide(color: context.colors.border, width: 0.5),
+          ),
         ),
         child: BottomNavigationBar(
           currentIndex: shell.currentIndex,
@@ -24,10 +26,10 @@ class MainNavigation extends StatelessWidget {
           onTap: (i) =>
               shell.goBranch(i, initialLocation: i == shell.currentIndex),
           type: BottomNavigationBarType.fixed,
-          backgroundColor: AppColors.background,
+          backgroundColor: context.colors.background,
           elevation: 0,
-          selectedItemColor: AppColors.accent,
-          unselectedItemColor: AppColors.textSecondary,
+          selectedItemColor: context.colors.accent,
+          unselectedItemColor: context.colors.textSecondary,
           selectedFontSize: 13,
           unselectedFontSize: 13,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),

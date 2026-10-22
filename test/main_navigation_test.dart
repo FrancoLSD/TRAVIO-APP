@@ -1,17 +1,20 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:travio_app/main.dart';
+
+import 'test_app.dart';
 
 void main() {
   testWidgets('el menú cambia entre las 4 pestañas', (tester) async {
-    await tester.pumpWidget(const ProviderScope(child: MainApp()));
+    await tester.pumpWidget(
+      await testApp({
+        'onboarding_completed': true,
+      }, auth: FakeAuthRepository(uid: 'test-user')),
+    );
     await tester.pumpAndSettle();
     expect(find.text('TRAVIO'), findsOneWidget);
 
     await tester.tap(find.text('Trips'));
     await tester.pumpAndSettle();
-    expect(find.widgetWithText(ListView, 'Trips'), findsOneWidget);
+    expect(find.text('No trips yet'), findsOneWidget);
 
     await tester.tap(find.text('Alerts'));
     await tester.pumpAndSettle();
@@ -19,6 +22,6 @@ void main() {
 
     await tester.tap(find.text('You'));
     await tester.pumpAndSettle();
-    expect(find.text('Your plan and preferences.'), findsOneWidget);
+    expect(find.text('YOUR PLAN'), findsOneWidget);
   });
 }
