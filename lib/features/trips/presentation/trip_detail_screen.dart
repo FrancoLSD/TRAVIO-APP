@@ -42,6 +42,9 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
   bool _fromHome = false;
   bool _showAll = false;
 
+  /// Gastos ya mostrados; uno que no esté aquí acaba de añadirse y entra con animación.
+  Set<String>? _seenExpenses;
+
   @override
   void initState() {
     super.initState();
@@ -99,8 +102,15 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
         ),
       );
     }
-    final expenses =
-        ref.watch(expensesProvider(trip.id)).value ?? const <Expense>[];
+    final loaded = ref.watch(expensesProvider(trip.id)).value;
+    final expenses = loaded ?? const <Expense>[];
+    final seen = _seenExpenses;
+    final added = seen == null
+        ? const <String>{}
+        : {for (final e in expenses) e.id}.difference(seen);
+    if (loaded != null) {
+      _seenExpenses = {...?seen, for (final e in expenses) e.id};
+    }
     final rates = ref.watch(ratesProvider).value;
     final today = DateTime.now();
 
@@ -273,7 +283,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                     ],
                   ),
                   const SizedBox(height: 8),
-                  _expenseList(trip, expenses),
+                  _expenseList(trip, expenses, added),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -445,7 +455,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
     ]);
   }
 
-  Widget _expenseList(Trip trip, List<Expense> expenses) {
+  Widget _expenseList(Trip trip, List<Expense> expenses, Set<String> added) {
     if (expenses.isEmpty) {
       return _Card(
         child: Text(
@@ -463,6 +473,7 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
       for (final expense in visible)
         _Row(
           key: ValueKey(expense.id),
+          added: added.contains(expense.id),
           // Tocar un gasto abre su edición, que también permite borrarlo.
           onTap: () => showEditExpenseSheet(context, trip, expense),
           icon: expense.category.icon,
@@ -540,11 +551,17 @@ class _SpentCard extends StatelessWidget {
             const SizedBox(height: 12),
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
-              child: LinearProgressIndicator(
-                value: (trip.spentHome / budget).clamp(0.0, 1.0),
-                minHeight: 6,
-                color: trip.color,
-                backgroundColor: trip.color.withValues(alpha: 0.18),
+              // Al añadir o borrar un gasto la barra avanza con suavidad.
+              child: TweenAnimationBuilder<double>(
+                tween: Tween(end: (trip.spentHome / budget).clamp(0.0, 1.0)),
+                duration: const Duration(milliseconds: 700),
+                curve: Curves.easeOutCubic,
+                builder: (context, value, _) => LinearProgressIndicator(
+                  value: value,
+                  minHeight: 6,
+                  color: trip.color,
+                  backgroundColor: trip.color.withValues(alpha: 0.18),
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -764,6 +781,7 @@ class _Rows extends StatelessWidget {
 class _Row extends StatelessWidget {
   const _Row({
     super.key,
+    this.added = false,
     this.onTap,
     required this.icon,
     required this.title,
@@ -778,6 +796,7 @@ class _Row extends StatelessWidget {
   final String amount;
   final String equivalent;
   final VoidCallback? onTap;
+  final bool added;
 
   @override
   Widget build(BuildContext context) {
@@ -833,6 +852,85 @@ class _Row extends StatelessWidget {
         ],
       ),
     );
-    return onTap == null ? row : InkWell(onTap: onTap, child: row);
+    final tappable = onTap == null ? row : InkWell(onTap: onTap, child: row);
+    return added ? _AddedEntrance(child: tappable) : tappable;
+  }
+}
+
+/// Entrada de un gasto recién guardado: la fila se abre, aparece deslizando
+/// y se resalta un momento con el acento.
+class _AddedEntrance extends StatefulWidget {
+  const _AddedEntrance({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_AddedEntrance> createState() => _AddedEntranceState();
+}
+
+class _AddedEntranceState extends State<_AddedEntrance>
+    with SingleTickerProviderStateMixin {
+  late final _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 1400),
+  );
+  late final _size = CurvedAnimation(
+    parent: _controller,
+    curve: const Interval(0, 0.3, curve: Curves.easeOutCubic),
+  );
+  late final _slide = Tween(begin: const Offset(0, -0.25), end: Offset.zero)
+      .animate(
+        CurvedAnimation(
+          parent: _controller,
+          curve: const Interval(0.05, 0.4, curve: Curves.easeOutBack),
+        ),
+      );
+  late final _fade = CurvedAnimation(
+    parent: _controller,
+    curve: const Interval(0.05, 0.35, curve: Curves.easeOut),
+  );
+  late final _highlight = CurvedAnimation(
+    parent: _controller,
+    curve: const Interval(0.4, 1, curve: Curves.easeInOut),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_controller.isAnimating || _controller.isCompleted) return;
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.value = 1;
+    } else {
+      _controller.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final accent = context.colors.accent;
+    return SizeTransition(
+      sizeFactor: _size,
+      alignment: Alignment.topCenter,
+      child: FadeTransition(
+        opacity: _fade,
+        child: SlideTransition(
+          position: _slide,
+          child: AnimatedBuilder(
+            animation: _highlight,
+            builder: (context, child) => ColoredBox(
+              color: accent.withValues(alpha: 0.12 * (1 - _highlight.value)),
+              child: child,
+            ),
+            child: widget.child,
+          ),
+        ),
+      ),
+    );
   }
 }

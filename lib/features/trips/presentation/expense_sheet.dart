@@ -207,6 +207,7 @@ class _ExpenseSheetState extends ConsumerState<_ExpenseSheet> {
         ),
       );
     });
+    if (!_editing) HapticFeedback.mediumImpact();
     Navigator.pop(context);
   }
 
