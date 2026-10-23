@@ -1,18 +1,17 @@
-import 'package:flutter/material.dart';
-
 enum ExpenseCategory {
-  food('Food', Icons.restaurant_outlined),
-  transport('Transport', Icons.train_outlined),
-  hotel('Hotel', Icons.hotel_outlined),
-  shopping('Shopping', Icons.shopping_bag_outlined),
-  entertainment('Entertainment', Icons.local_activity_outlined),
-  other('Other', Icons.more_horiz);
+  food('Food'),
+  transport('Transport'),
+  hotel('Hotel'),
+  shopping('Shopping'),
+  entertainment('Entertainment'),
+  other('Other');
 
-  const ExpenseCategory(this.label, this.icon);
+  const ExpenseCategory(this.label);
 
   final String label;
-  // shortcut: iconos Material; cambiarlos por los iconos propios de TRAVIO cuando estén exportados.
-  final IconData icon;
+
+  /// Icono propio en assets/icons (mismo nombre que la categoría).
+  String get icon => name;
 }
 
 /// Gasto de un viaje. El importe va siempre en la moneda local del viaje.

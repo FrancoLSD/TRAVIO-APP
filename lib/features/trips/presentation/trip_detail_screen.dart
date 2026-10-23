@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/constants/currencies.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/money.dart';
@@ -123,25 +124,71 @@ class _TripDetailScreenState extends ConsumerState<TripDetailScreen> {
                             : context.go('/trips'),
                       ),
                       const Spacer(),
-                      PopupMenuButton<String>(
-                        tooltip: 'Trip options',
-                        color: context.colors.card,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                      // Menú propio estilo iOS: tarjeta con borde y sombra suave bajo el botón, sin onda de Material.
+                      Theme(
+                        data: Theme.of(context).copyWith(
+                          splashFactory: NoSplash.splashFactory,
+                          highlightColor: Colors.transparent,
                         ),
-                        onSelected: (_) => _deleteTrip(trip),
-                        itemBuilder: (_) => [
-                          PopupMenuItem(
-                            value: 'delete',
-                            child: Text(
-                              'Delete trip',
-                              style: TextStyle(
-                                color: context.colors.destructive,
+                        child: PopupMenuButton<String>(
+                          tooltip: 'Trip options',
+                          position: PopupMenuPosition.under,
+                          offset: const Offset(0, 8),
+                          color: context.colors.card,
+                          surfaceTintColor: Colors.transparent,
+                          elevation: 8,
+                          shadowColor: Colors.black.withValues(alpha: 0.12),
+                          menuPadding: const EdgeInsets.all(6),
+                          constraints: const BoxConstraints(minWidth: 210),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            side: BorderSide(color: context.colors.border),
+                          ),
+                          popUpAnimationStyle: const AnimationStyle(
+                            duration: Duration(milliseconds: 220),
+                            reverseDuration: Duration(milliseconds: 150),
+                          ),
+                          onSelected: (_) => _deleteTrip(trip),
+                          itemBuilder: (_) => [
+                            PopupMenuItem(
+                              value: 'delete',
+                              height: 46,
+                              padding: EdgeInsets.zero,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                ),
+                                height: 46,
+                                decoration: BoxDecoration(
+                                  color: context.colors.destructive.withValues(
+                                    alpha: 0.08,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Delete trip',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: context.colors.destructive,
+                                        ),
+                                      ),
+                                    ),
+                                    AppIcon(
+                                      'delete',
+                                      size: 20,
+                                      color: context.colors.destructive,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                        child: const _CircleButton(icon: Icons.more_horiz),
+                          ],
+                          child: const _CircleButton(icon: Icons.more_horiz),
+                        ),
                       ),
                     ],
                   ),
@@ -725,7 +772,7 @@ class _Row extends StatelessWidget {
     this.subtitle,
   });
 
-  final IconData icon;
+  final String icon;
   final String title;
   final String? subtitle;
   final String amount;
@@ -741,7 +788,7 @@ class _Row extends StatelessWidget {
           CircleAvatar(
             radius: 18,
             backgroundColor: context.colors.fill,
-            child: Icon(icon, size: 18, color: context.colors.text),
+            child: AppIcon(icon, size: 18, color: context.colors.text),
           ),
           const SizedBox(width: 14),
           Expanded(

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/constants/currencies.dart';
 import '../../../core/preferences/app_preferences.dart';
 import '../../../core/theme/app_theme.dart';
@@ -173,7 +174,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                   const SizedBox(height: 12),
                   if (activeTrips.isEmpty)
                     _EmptyCard(
-                      icon: Icons.luggage_outlined,
+                      icon: 'trips',
                       title: allTrips.isEmpty
                           ? 'No trips yet'
                           : 'No active trips',
@@ -188,7 +189,7 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                   const SizedBox(height: 12),
                   if (favorites.isEmpty)
                     _EmptyCard(
-                      icon: Icons.star_border,
+                      icon: 'favorite',
                       title: 'No active favorites',
                       subtitle: 'Pin currency pairs for quick access',
                       action: 'Add Favorite',
@@ -331,8 +332,8 @@ class _ConvertScreenState extends ConsumerState<ConvertScreen> {
                     ? 'Remove from favorites'
                     : 'Add to favorites',
                 onPressed: () => _toggleFavorite(pair, isFavorite),
-                icon: Icon(
-                  isFavorite ? Icons.star : Icons.star_border,
+                icon: AppIcon(
+                  isFavorite ? 'favorite-filled' : 'favorite',
                   color: isFavorite ? colors.accent : colors.textSecondary,
                 ),
               ),
@@ -668,7 +669,7 @@ class _EmptyCard extends StatelessWidget {
     required this.onPressed,
   });
 
-  final IconData icon;
+  final String icon;
   final String title;
   final String subtitle;
   final String action;
@@ -691,7 +692,7 @@ class _EmptyCard extends StatelessWidget {
               CircleAvatar(
                 radius: 20,
                 backgroundColor: colors.fill,
-                child: Icon(icon, size: 20, color: colors.textSecondary),
+                child: AppIcon(icon, size: 20, color: colors.textSecondary),
               ),
               const SizedBox(width: 14),
               Expanded(

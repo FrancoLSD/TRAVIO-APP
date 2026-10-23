@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/legal_pages.dart';
 import '../../../core/widgets/primary_button.dart';
@@ -88,13 +89,13 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
             const _Hero(),
             const SizedBox(height: 10),
             const _BenefitRow(
-              _Benefit(Icons.sync_alt, 'Offline converter'),
-              _Benefit(Icons.luggage_outlined, 'Trip budgets & expenses'),
+              _Benefit('offline-converter', 'Offline converter'),
+              _Benefit('trip-budgets', 'Trip budgets & expenses'),
             ),
             const SizedBox(height: 8),
             const _BenefitRow(
-              _Benefit(Icons.star_border, 'Favorite pairs'),
-              _Benefit(Icons.history, 'Rate saved per expense'),
+              _Benefit('favorite-pairs', 'Favorite pairs'),
+              _Benefit('rate-saved', 'Rate saved per expense'),
             ),
             const SizedBox(height: 12),
             if (options.isEmpty)
@@ -383,7 +384,7 @@ class _BenefitRow extends StatelessWidget {
 class _Benefit extends StatelessWidget {
   const _Benefit(this.icon, this.label);
 
-  final IconData icon;
+  final String icon;
   final String label;
 
   @override
@@ -404,7 +405,8 @@ class _Benefit extends StatelessWidget {
               color: colors.accent.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(9),
             ),
-            child: Icon(icon, size: 16, color: colors.accent),
+            alignment: Alignment.center,
+            child: AppIcon(icon, size: 16, color: colors.accent),
           ),
           const SizedBox(width: 10),
           Expanded(

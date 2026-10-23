@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/widgets/app_icon.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/money.dart';
 import '../../../core/widgets/confirm_delete_dialog.dart';
@@ -420,7 +421,7 @@ class _ExpenseSheetState extends ConsumerState<_ExpenseSheet> {
                           borderRadius: BorderRadius.circular(18),
                         ),
                       ),
-                      icon: const Icon(Icons.delete_outline, size: 20),
+                      icon: const AppIcon('delete', size: 20),
                       label: const Text(
                         'Delete expense',
                         style: TextStyle(
@@ -555,7 +556,7 @@ class _CategoryTile extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(category.icon, size: 22, color: color),
+              AppIcon(category.icon, size: 22, color: color),
               const SizedBox(height: 6),
               Text(
                 category.label,
